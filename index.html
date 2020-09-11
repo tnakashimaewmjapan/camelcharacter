@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <title>Vue.js practice</title>
+    <style type="text/css">
+        body {
+            letter-spacing: 0.5px;
+            line-height: 1.8em;
+            background: #eed;
+        }
+        div {white-space: pre-wrap;}
+        .large {font-size: 1.15em; color: #440000;}
+        .small+.large, .large+.small {
+            padding-left: 1px;
+        }
+
+    </style>
+</head>
+<body>
+    <div id="myapp">
+        <textarea v-model="myTextarea" cols="30" rows="10"></textarea>
+        <p><span v-for="(shaped_text,index) in myTextarea" :ref="'name'+index">{{ shaped_text }}</span></p>
+        <p><span>{{ myTextarea }}</span></p>
+    </div>
+
+    <!-- Vue.jsのインストール -->
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+    <script>
+    var myapp = new Vue({
+        el: '#myapp',
+        data: {
+            myTextarea: 'あのイーハトーヴォのすきとおった風、夏でも底に冷たさをもつ青いそら、うつくしい森で飾られたモリーオ市、郊外のぎらぎらひかる草の波。　またそのなかでいっしょになったたくさんのひとたち、ファゼーロとロザーロ、羊飼のミーロや、顔の赤いこどもたち、地主のテーモ、山猫博士のボーガント・デストゥパーゴなど、いまこの暗い巨きな石の建物のなかで考えていると、みんなむかし風のなつかしい青い幻燈のように思われます。では、わたくしはいつかの小さなみだしをつけながら、しずかにあの年のイーハトーヴォの五月から十月までを書きつけましょう。',
+            shaped_text: '',
+            isLarge: true,
+        },
+
+        watch: {
+            myTextarea: {
+                handler: function() {
+                    this.$nextTick(function() {
+                        for (let step = 0; step < this.myTextarea.length; step++) {
+                            var ref_name = "name"+step
+                            var txt = this.$refs[ref_name][0].innerText
+                            // console.log(txt.charCodeAt(0))
+                            if(txt.charCodeAt(0)>=12449) { // "ン(12531)"
+                                this.$refs[ref_name][0].className = "large"
+                            } else {
+                                this.$refs[ref_name][0].className = "small"
+                            }
+                        }
+                    })
+                },
+                immediate: true,
+            }
+        }
+    })
+    </script>
